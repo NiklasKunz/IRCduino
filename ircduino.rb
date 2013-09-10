@@ -49,22 +49,19 @@ bot = Cinch::Bot.new do
 		arduino.digital_write pin3, false
 	end
 	
-	# *click*
-        sleep 3.14159
-	puts "OFF!"
-	arduino.digital_write pin1, false
-	arduino.digital_write pin2, false
-	arduino.digital_write pin3, false
-
+	# 3.14159?
+	
 	# New messages
-	on :message do
-		arduino.digital_write pin1, true
-		sleep 1	
-		arduino.digital_write pin1, false
+	on :message do |m|
+		if m.message[/monographic:/].nil?
+			arduino.digital_write pin1, true
+			sleep 1	
+			arduino.digital_write pin1, false
+		end
 	end
 	
 	# New private messages
-	on :message, "#{username}" do
+	on :message, /#{username}:.*/ do
 		arduino.digital_write pin2, true
 		sleep 1
 		arduino.digital_write pin2, false
